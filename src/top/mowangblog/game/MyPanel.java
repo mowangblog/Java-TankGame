@@ -13,19 +13,18 @@ import java.util.Vector;
  * @author : Xuan Li
  * @date : 2021-09-14 20:23
  **/
-public class MyPanel extends JPanel implements KeyListener {
+@SuppressWarnings("all")
+public class MyPanel extends JPanel implements KeyListener,Runnable{
     HeroTank heroTank = null;
     Vector<EnemyTank> enemyTanks = new Vector<>();
     int enemyNum = 10;
 
     public MyPanel() {
-        this.heroTank = new HeroTank(500, 400, 0, 5);
+        this.heroTank = new HeroTank(500, 400, 3, 5);
         for (int i = 0; i < enemyNum; i++) {
             enemyTanks.add(new EnemyTank((200+(i*60)), 100, 2, 5));
         }
-
     }
-
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -33,7 +32,27 @@ public class MyPanel extends JPanel implements KeyListener {
         drawTank(heroTank.getX(), heroTank.getY(), g, heroTank.getDirect(), heroTank.getType());
         for (EnemyTank enemyTank : enemyTanks) {
             drawTank(enemyTank.getX(), enemyTank.getY(), g, enemyTank.getDirect(), enemyTank.getType());
+            for (int i = 0; i < enemyTank.bullets.size(); i++) {
+                Bullet bullet = enemyTank.bullets.get(i);
+                if(bullet.isLive()){
+                    drawBullet(bullet.getX(),bullet.getY(),g);
+                }else {
+                    enemyTank.bullets.remove(bullet);
+                }
+            }
         }
+        for (int i = 0; i < heroTank.bullets.size(); i++) {
+            Bullet bullet = heroTank.bullets.get(i);
+            if(bullet.isLive()){
+                drawBullet(bullet.getX(),bullet.getY(),g);
+            }else {
+                heroTank.bullets.remove(bullet);
+            }
+        }
+    }
+
+    public void drawBullet(int x, int y, Graphics g){
+        g.draw3DRect(x , y ,3,3,false);
     }
 
     /**
@@ -98,30 +117,55 @@ public class MyPanel extends JPanel implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        //按下w键
         if (e.getKeyCode() == KeyEvent.VK_W) {
+            //设置坦克移动方向为上
             heroTank.setDirect(Tank.DIRECT_UP);
             heroTank.move(Tank.DIRECT_UP);
         }
-
+        //按下D键
         if (e.getKeyCode() == KeyEvent.VK_D) {
+            //设置坦克移动方向为右
             heroTank.setDirect(Tank.DIRECT_RIGHT);
             heroTank.move(Tank.DIRECT_RIGHT);
         }
-
+        //按下S键
         if (e.getKeyCode() == KeyEvent.VK_S) {
+            //设置坦克移动方向为下
             heroTank.setDirect(Tank.DIRECT_DOWN);
             heroTank.move(Tank.DIRECT_DOWN);
         }
-
+        //按下A键
         if (e.getKeyCode() == KeyEvent.VK_A) {
+            //设置坦克移动方向为左
             heroTank.setDirect(Tank.DIRECT_LEFT);
             heroTank.move(Tank.DIRECT_LEFT);
         }
-        repaint();
+        //按下J键
+        if (e.getKeyCode() == KeyEvent.VK_J) {
+            //坦克射击
+           heroTank.shot();
+            for (EnemyTank enemyTank : enemyTanks) {
+                enemyTank.shot();
+            }
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void run() {
+        while (true){
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            this.repaint();
+        }
 
     }
 }

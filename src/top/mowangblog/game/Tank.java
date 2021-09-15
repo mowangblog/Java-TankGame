@@ -9,6 +9,7 @@ import java.awt.*;
  * @author : Xuan Li
  * @date : 2021-09-14 20:22
  **/
+@SuppressWarnings("all")
 public class Tank {
     private int x;
     private int y;

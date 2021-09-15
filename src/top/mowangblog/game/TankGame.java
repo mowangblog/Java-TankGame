@@ -17,6 +17,8 @@ public class TankGame extends JFrame {
     }
     public TankGame() {
         this.myPanel = new MyPanel();
+        Thread thread = new Thread(this.myPanel);
+        thread.start();
         //添加画板
         this.add(myPanel);
         //设置尺寸
