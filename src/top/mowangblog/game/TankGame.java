@@ -10,6 +10,7 @@ import java.awt.*;
  * @author : Xuan Li
  * @date : 2021-09-14 20:25
  **/
+@SuppressWarnings("all")
 public class TankGame extends JFrame {
     MyPanel myPanel = null;
     public static void main(String[] args) {
@@ -17,6 +18,7 @@ public class TankGame extends JFrame {
     }
     public TankGame() {
         this.myPanel = new MyPanel();
+        //启动画布线程，实现自动刷新
         Thread thread = new Thread(this.myPanel);
         thread.start();
         //添加画板

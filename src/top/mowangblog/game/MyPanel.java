@@ -20,6 +20,7 @@ public class MyPanel extends JPanel implements KeyListener,Runnable{
     int enemyNum = 10;
 
     public MyPanel() {
+        //初始化我方和敌方坦克
         this.heroTank = new HeroTank(500, 400, 3, 5);
         for (int i = 0; i < enemyNum; i++) {
             enemyTanks.add(new EnemyTank((200+(i*60)), 100, 2, 5));
@@ -31,7 +32,9 @@ public class MyPanel extends JPanel implements KeyListener,Runnable{
         g.fillRect(0, 0, 1980, 1080);
         drawTank(heroTank.getX(), heroTank.getY(), g, heroTank.getDirect(), heroTank.getType());
         for (EnemyTank enemyTank : enemyTanks) {
+            //画出敌方坦克
             drawTank(enemyTank.getX(), enemyTank.getY(), g, enemyTank.getDirect(), enemyTank.getType());
+            //画敌方坦克射出的子弹
             for (int i = 0; i < enemyTank.bullets.size(); i++) {
                 Bullet bullet = enemyTank.bullets.get(i);
                 if(bullet.isLive()){
@@ -41,6 +44,7 @@ public class MyPanel extends JPanel implements KeyListener,Runnable{
                 }
             }
         }
+        //画出我方坦克发射的子弹
         for (int i = 0; i < heroTank.bullets.size(); i++) {
             Bullet bullet = heroTank.bullets.get(i);
             if(bullet.isLive()){
@@ -62,9 +66,10 @@ public class MyPanel extends JPanel implements KeyListener,Runnable{
      * @param y      y轴
      * @param g      画笔
      * @param direct 方向 0上 1右 2下 3左
-     * @param type   类型 0我方,1敌法
+     * @param type   类型 0我方,1敌方
      */
     public void drawTank(int x, int y, Graphics g, int direct, int type) {
+        //根据类型决定坦克颜色 类型 0我方,1敌方
         switch (type) {
             case 0:
                 g.setColor(Color.YELLOW);
@@ -77,6 +82,7 @@ public class MyPanel extends JPanel implements KeyListener,Runnable{
                 break;
         }
         switch (direct) {
+            //根据方向画出坦克 方向 0上 1右 2下 3左
             case 0:
                 g.fill3DRect(x, y, 10, 60, false);
                 g.fill3DRect(x + 30, y, 10, 60, false);
@@ -158,6 +164,7 @@ public class MyPanel extends JPanel implements KeyListener,Runnable{
 
     @Override
     public void run() {
+        //每隔十毫秒自动刷新画布
         while (true){
             try {
                 Thread.sleep(10);
