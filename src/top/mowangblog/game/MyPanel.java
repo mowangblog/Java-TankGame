@@ -53,7 +53,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         if (heroTank != null && heroTank.isLive()) {
             drawTank(heroTank.getX(), heroTank.getY(), g, heroTank.getDirect(), heroTank.getType());
         } else {
-            heroTank = null;
+            heroTank.setX(-100);
+            heroTank.setY(-100);
             System.out.println("游戏结束");
         }
         //遍历我方炮弹
