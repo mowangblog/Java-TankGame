@@ -20,31 +20,45 @@ public class Tank {
     public static final int DIRECT_RIGHT = 1;
     public static final int DIRECT_DOWN = 2;
     public static final int DIRECT_LEFT = 3;
+    private boolean isLive = true;
+
+    public boolean isLive() {
+        return isLive;
+    }
+
+    public void setLive(boolean live) {
+        isLive = live;
+    }
+
 
     public void move(int direct){
         switch (direct) {
             case 0:
-                if (!(y >= 0)) {
+                if (!(y > 0)) {
                     break;
                 }
+                this.setDirect(direct);
                 y-=speed;
                 break;
             case 1:
-                if (!(x <= 980)) {
+                if (!(x + 60 < 980)) {
                     break;
                 }
+                this.setDirect(direct);
                 x+=speed;
                 break;
             case 2:
-                if (!(y <= 780)) {
+                if (!(y + 60 < 780)) {
                     break;
                 }
+                this.setDirect(direct);
                 y+=speed;
                 break;
             case 3:
                 if (!(x >= 0)) {
                     break;
                 }
+                this.setDirect(direct);
                 x-=speed;
                 break;
             default:

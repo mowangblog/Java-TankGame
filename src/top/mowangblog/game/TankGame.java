@@ -24,7 +24,7 @@ public class TankGame extends JFrame {
         //添加画板
         this.add(myPanel);
         //设置尺寸
-        this.setSize(980,780);
+        this.setSize(1080, 880);
         //点击x退出程序
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //添加key监听器

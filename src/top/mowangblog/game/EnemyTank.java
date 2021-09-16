@@ -17,16 +17,6 @@ public class EnemyTank extends Tank implements Runnable {
 
     public static Vector<Bullet> bullets = new Vector<>();
 
-    private boolean isLive = true;
-
-    public boolean isLive() {
-        return isLive;
-    }
-
-    public void setLive(boolean live) {
-        isLive = live;
-    }
-
     @Override
     public int getType() {
         return type;
@@ -67,20 +57,23 @@ public class EnemyTank extends Tank implements Runnable {
     @Override
     public void run() {
         while (true) {
-            if (isLive()) {
-                int i = (int) (Math.random() * 4 + 1);
-                move(i);
-                if(i%2==0){
-                    shot();
+            int i = (int) (Math.random() * 4);
+            for (int j = 0; j < 15+i<<1; j++) {
+                try {
+                    Thread.sleep(100);
+                    move(i);
+                    if(i == j){
+                        shot();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            } else {
+            }
+            shot();
+            if (!isLive()) {
                 break;
             }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 }

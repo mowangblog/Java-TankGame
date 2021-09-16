@@ -20,7 +20,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     //敌方坦克
     public static Vector<EnemyTank> enemyTanks = new Vector<>();
 
-    int enemyNum = 10;
+    int enemyNum = 5;
     //爆炸图片
     Image image1 = null;
     Image image2 = null;
@@ -34,7 +34,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         this.heroTank = new HeroTank(500, 400, 3, 5);
         //初始化敌方坦克
         for (int i = 0; i < enemyNum; i++) {
-            EnemyTank enemyTank = new EnemyTank((200 + (i * 60)), 100, 2, 5);
+            EnemyTank enemyTank = new EnemyTank((200 + (i * 160)), 100, 2, 5);
             enemyTanks.add(enemyTank);
             Thread thread = new Thread(enemyTank);
             thread.start();
@@ -55,7 +55,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         } else {
             heroTank.setX(-100);
             heroTank.setY(-100);
-            System.out.println("游戏结束");
+//            System.out.println("游戏结束");
         }
         //遍历我方炮弹
         for (int i = 0; i < heroTank.bullets.size(); i++) {
@@ -232,25 +232,21 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         //按下w键
         if (e.getKeyCode() == KeyEvent.VK_W) {
             //设置坦克移动方向为上
-            heroTank.setDirect(Tank.DIRECT_UP);
             heroTank.move(Tank.DIRECT_UP);
         }
         //按下D键
         if (e.getKeyCode() == KeyEvent.VK_D) {
             //设置坦克移动方向为右
-            heroTank.setDirect(Tank.DIRECT_RIGHT);
             heroTank.move(Tank.DIRECT_RIGHT);
         }
         //按下S键
         if (e.getKeyCode() == KeyEvent.VK_S) {
             //设置坦克移动方向为下
-            heroTank.setDirect(Tank.DIRECT_DOWN);
             heroTank.move(Tank.DIRECT_DOWN);
         }
         //按下A键
         if (e.getKeyCode() == KeyEvent.VK_A) {
             //设置坦克移动方向为左
-            heroTank.setDirect(Tank.DIRECT_LEFT);
             heroTank.move(Tank.DIRECT_LEFT);
         }
 
