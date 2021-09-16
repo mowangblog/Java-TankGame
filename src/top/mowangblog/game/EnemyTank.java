@@ -10,10 +10,22 @@ import java.util.Vector;
  * @date : 2021-09-14 21:00
  **/
 @SuppressWarnings("all")
-public class EnemyTank extends Tank{
+public class EnemyTank extends Tank implements Runnable {
     int type = 1;
+
     Bullet bullet = null;
-    Vector<Bullet> bullets = new Vector<>();
+
+    public static Vector<Bullet> bullets = new Vector<>();
+
+    private boolean isLive = true;
+
+    public boolean isLive() {
+        return isLive;
+    }
+
+    public void setLive(boolean live) {
+        isLive = live;
+    }
 
     @Override
     public int getType() {
@@ -50,5 +62,25 @@ public class EnemyTank extends Tank{
 
     public EnemyTank(int x, int y, int direct, int speed) {
         super(x, y, direct, speed);
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            if (isLive()) {
+                int i = (int) (Math.random() * 4 + 1);
+                move(i);
+                if(i%2==0){
+                    shot();
+                }
+            } else {
+                break;
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

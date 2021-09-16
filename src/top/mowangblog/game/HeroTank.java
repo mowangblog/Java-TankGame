@@ -14,6 +14,15 @@ public class HeroTank extends Tank{
     private int type = 0;
     Bullet bullet = null;
     Vector<Bullet> bullets = new Vector<>();
+    private boolean isLive = true;
+
+    public boolean isLive() {
+        return isLive;
+    }
+
+    public void setLive(boolean live) {
+        isLive = live;
+    }
 
     public HeroTank(int x, int y, int direct, int speed) {
         super(x, y, direct, speed);

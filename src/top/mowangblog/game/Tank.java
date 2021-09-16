@@ -24,15 +24,27 @@ public class Tank {
     public void move(int direct){
         switch (direct) {
             case 0:
+                if (!(y >= 0)) {
+                    break;
+                }
                 y-=speed;
                 break;
             case 1:
+                if (!(x <= 980)) {
+                    break;
+                }
                 x+=speed;
                 break;
             case 2:
+                if (!(y <= 780)) {
+                    break;
+                }
                 y+=speed;
                 break;
             case 3:
+                if (!(x >= 0)) {
+                    break;
+                }
                 x-=speed;
                 break;
             default:
