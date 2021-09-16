@@ -13,7 +13,16 @@ import java.util.Vector;
 public class EnemyTank extends Tank{
     int type = 1;
     Bullet bullet = null;
-    Vector<Bullet> bullets = new Vector<>();
+    public static Vector<Bullet> bullets = new Vector<>();
+    private boolean isLive = true;
+
+    public boolean isLive() {
+        return isLive;
+    }
+
+    public void setLive(boolean live) {
+        isLive = live;
+    }
 
     @Override
     public int getType() {
