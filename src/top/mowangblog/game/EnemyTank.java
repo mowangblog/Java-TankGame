@@ -10,7 +10,7 @@ import java.util.Vector;
  * @date : 2021-09-14 21:00
  **/
 @SuppressWarnings("all")
-public class EnemyTank extends Tank{
+public class EnemyTank extends Tank implements Runnable{
     int type = 1;
     Bullet bullet = null;
     public static Vector<Bullet> bullets = new Vector<>();
@@ -59,5 +59,18 @@ public class EnemyTank extends Tank{
 
     public EnemyTank(int x, int y, int direct, int speed) {
         super(x, y, direct, speed);
+    }
+
+    @Override
+    public void run() {
+        while (true){
+            move(Tank.DIRECT_DOWN);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            shot();
+        }
     }
 }

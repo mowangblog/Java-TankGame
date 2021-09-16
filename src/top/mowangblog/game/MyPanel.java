@@ -34,7 +34,10 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         this.heroTank = new HeroTank(500, 400, 3, 5);
         //初始化敌方坦克
         for (int i = 0; i < enemyNum; i++) {
-            enemyTanks.add(new EnemyTank((200 + (i * 60)), 100, 2, 5));
+            EnemyTank enemyTank = new EnemyTank((200 + (i * 60)), 100, 2, 5);
+            enemyTanks.add(enemyTank);
+            Thread thread = new Thread(enemyTank);
+            thread.start();
         }
         //初始化爆炸图片
         image1 = Toolkit.getDefaultToolkit().createImage(Panel.class.getResource("/bomb_1.gif"));
@@ -47,11 +50,11 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         super.paint(g);
         g.fillRect(0, 0, 1980, 1080);
         //我方坦克存活则继续游戏，被击毁则游戏结束
-        if (heroTank.isLive()) {
+        if (heroTank != null && heroTank.isLive()) {
             drawTank(heroTank.getX(), heroTank.getY(), g, heroTank.getDirect(), heroTank.getType());
         } else {
+            heroTank = null;
             System.out.println("游戏结束");
-//            System.exit(200);
         }
         //遍历我方炮弹
         for (int i = 0; i < heroTank.bullets.size(); i++) {
@@ -94,15 +97,15 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         for (int i = 0; i < bombs.size(); i++) {
             Bomb bomb = bombs.get(i);
             if (bomb.isLive()) {
-                if(bomb.getLife() > 6){
-                    g.drawImage(image1,bomb.getX(),bomb.getY(),50,50,this);
-                }else if(bomb.getLife() > 3){
-                    g.drawImage(image2,bomb.getX(),bomb.getY(),50,50,this);
-                }else {
-                    g.drawImage(image3,bomb.getX(),bomb.getY(),50,50,this);
+                if (bomb.getLife() > 20) {
+                    g.drawImage(image1, bomb.getX(), bomb.getY(), 50, 50, this);
+                } else if (bomb.getLife() > 10) {
+                    g.drawImage(image2, bomb.getX(), bomb.getY(), 50, 50, this);
+                } else {
+                    g.drawImage(image3, bomb.getX(), bomb.getY(), 50, 50, this);
                 }
                 bomb.lifeDown();
-            }else {
+            } else {
                 bombs.remove(bomb);
             }
         }
@@ -119,7 +122,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     if (tank instanceof EnemyTank) {
                         ((EnemyTank) tank).setLive(false);
                         bullet.setLive(false);
-                    } else if(tank instanceof HeroTank){
+                    } else if (tank instanceof HeroTank) {
                         ((HeroTank) tank).setLive(false);
                         bullet.setLive(false);
                     }
@@ -136,7 +139,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     if (tank instanceof EnemyTank) {
                         ((EnemyTank) tank).setLive(false);
                         bullet.setLive(false);
-                    } else if(tank instanceof HeroTank){
+                    } else if (tank instanceof HeroTank) {
                         ((HeroTank) tank).setLive(false);
                         bullet.setLive(false);
                     }
@@ -223,9 +226,6 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         if (e.getKeyCode() == KeyEvent.VK_J) {
             //坦克射击
             heroTank.shot();
-            for (EnemyTank enemyTank : enemyTanks) {
-                enemyTank.shot();
-            }
         }
         //按下w键
         if (e.getKeyCode() == KeyEvent.VK_W) {
@@ -263,7 +263,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     public void run() {
         while (true) {
             try {
-                Thread.sleep(50);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

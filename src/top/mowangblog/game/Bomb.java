@@ -12,7 +12,7 @@ public class Bomb {
     private int y;
 
     private boolean isLive = true;
-    private int life = 9;
+    private int life = 30;
 
     public Bomb(int x, int y) {
         this.x = x;
