@@ -1,6 +1,7 @@
 package top.mowangblog.game;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Java-TankGame
@@ -10,7 +11,7 @@ import java.awt.*;
  * @date : 2021-09-14 20:22
  **/
 @SuppressWarnings("all")
-public class Tank {
+public class Tank implements Serializable {
     private int x;
     private int y;
     private int direct;
@@ -22,6 +23,7 @@ public class Tank {
     public static final int DIRECT_LEFT = 3;
     private boolean isLive = true;
 
+
     public boolean isLive() {
         return isLive;
     }
@@ -29,7 +31,6 @@ public class Tank {
     public void setLive(boolean live) {
         isLive = live;
     }
-
 
     public void move(int direct){
         switch (direct) {

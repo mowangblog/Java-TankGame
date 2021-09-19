@@ -1,5 +1,6 @@
 package top.mowangblog.game;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Vector;
  * @date : 2021-09-14 20:23
  **/
 @SuppressWarnings("all")
-public class HeroTank extends Tank{
+public class HeroTank extends Tank {
     private int type = 0;
     Bullet bullet = null;
     Vector<Bullet> bullets = new Vector<>();

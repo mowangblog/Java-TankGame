@@ -1,5 +1,7 @@
 package top.mowangblog.game;
 
+import java.io.Serializable;
+
 /**
  * Java-TankGame
  * 子弹
@@ -8,7 +10,7 @@ package top.mowangblog.game;
  * @date : 2021-09-15 23:43
  **/
 @SuppressWarnings("all")
-public class Bullet implements Runnable {
+public class Bullet implements Runnable, Serializable {
     private int x;//子弹x
     private int y;//子弹y
     private int speed;//子弹速度

@@ -20,6 +20,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     //敌方坦克
     public static Vector<EnemyTank> enemyTanks = new Vector<>();
 
+    public static Recorder recorder;
+
     int enemyNum = 5;
     //爆炸图片
     Image image1 = null;
@@ -32,29 +34,51 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     public MyPanel() {
         //初始化我方坦克
         this.heroTank = new HeroTank(500, 400, 3, 5);
-        //初始化敌方坦克
-        for (int i = 0; i < enemyNum; i++) {
-            EnemyTank enemyTank = new EnemyTank((200 + (i * 160)), 100, 2, 5);
-            enemyTanks.add(enemyTank);
-            Thread thread = new Thread(enemyTank);
-            thread.start();
+        if (TankGame.isNew) {
+            //初始化敌方坦克
+            for (int i = 0; i < enemyNum; i++) {
+                EnemyTank enemyTank = new EnemyTank((200 + (i * 60)), 100, 2, 1);
+                enemyTanks.add(enemyTank);
+                Thread thread = new Thread(enemyTank);
+                thread.start();
+            }
         }
+        recorder = new Recorder(0,0);
+
         //初始化爆炸图片
         image1 = Toolkit.getDefaultToolkit().createImage(Panel.class.getResource("/bomb_1.gif"));
         image2 = Toolkit.getDefaultToolkit().createImage(Panel.class.getResource("/bomb_2.gif"));
         image3 = Toolkit.getDefaultToolkit().createImage(Panel.class.getResource("/bomb_3.gif"));
+
+        //播放音乐
+        AePlayWave aePlayWave = new AePlayWave("src/static/music.wav");
+        new Thread(aePlayWave).start();
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        g.fillRect(0, 0, 1980, 1080);
+        //画出游戏区域
+        g.fillRect(0, 0, 980, 780);
+
+        //记录成绩
+        Font font = new Font("宋体",Font.BOLD,25);
+        g.setFont(font);
+        g.drawString("您累计击毁敌方坦克",1000,50);
+        drawTank(1000, 70, g, 0, 1);
+        g.setColor(Color.black);
+        g.drawString(recorder.getCont()+"",1100,110);
+        g.drawString("被击毁次数",1000,160);
+        drawTank(1000, 180, g, 0, 0);
+        g.setColor(Color.black);
+        g.drawString(recorder.getDieCont()+"",1100,220);
         //我方坦克存活则继续游戏，被击毁则游戏结束
         if (heroTank != null && heroTank.isLive()) {
             drawTank(heroTank.getX(), heroTank.getY(), g, heroTank.getDirect(), heroTank.getType());
         } else {
-            heroTank.setX(-100);
-            heroTank.setY(-100);
+            heroTank.setX(500);
+            heroTank.setY(400);
+            heroTank.setLive(true);
 //            System.out.println("游戏结束");
         }
         //遍历我方炮弹
@@ -71,6 +95,15 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                 }
             } else {
                 heroTank.bullets.remove(bullet);
+            }
+        }
+        if(enemyTanks.size() == 0){
+            //重新初始化敌方坦克
+            for (int i = 0; i < enemyNum; i++) {
+                EnemyTank enemyTank = new EnemyTank((200 + (i * 160)), 100, 2, 1);
+                enemyTanks.add(enemyTank);
+                Thread thread = new Thread(enemyTank);
+                thread.start();
             }
         }
         //画出敌方坦克和敌方坦克打出的炮弹
@@ -123,9 +156,11 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     if (tank instanceof EnemyTank) {
                         ((EnemyTank) tank).setLive(false);
                         bullet.setLive(false);
+                        recorder.addCont();
                     } else if (tank instanceof HeroTank) {
                         ((HeroTank) tank).setLive(false);
                         bullet.setLive(false);
+                        recorder.addDieCont();
                     }
                     Bomb bomb = new Bomb(tank.getX(), tank.getY());
                     bombs.add(bomb);
@@ -140,9 +175,11 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     if (tank instanceof EnemyTank) {
                         ((EnemyTank) tank).setLive(false);
                         bullet.setLive(false);
+                        recorder.addCont();
                     } else if (tank instanceof HeroTank) {
                         ((HeroTank) tank).setLive(false);
                         bullet.setLive(false);
+                        recorder.addDieCont();
                     }
                     Bomb bomb = new Bomb(tank.getX(), tank.getY());
                     bombs.add(bomb);
